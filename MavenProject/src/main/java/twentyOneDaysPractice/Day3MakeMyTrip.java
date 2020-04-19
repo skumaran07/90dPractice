@@ -94,10 +94,20 @@ public class Day3MakeMyTrip {
 		sixThree.click();
 		driver.findElement(By.xpath("//span[@class='close']")).click();
 		//12) Click on BOOK THIS NOW
-		WebElement viewThisCombo = driver.findElement(By.className("primaryBtn"));
+		WebElement viewThisCombo = driver.findElement(By.xpath("//button[text()='VIEW THIS COMBO']"));
 		viewThisCombo.click();
+		Thread.sleep(3000);
+		WebElement bookCombo = driver.findElement(By.xpath("//span[text()='Book this combo']"));
+		bookCombo.click();
 		//13) Print the Total Payable amount
+		driver.findElement(By.xpath("//span[@class='close']")).click();
+		WebElement totalPay = driver.findElement(By.xpath("//span[@id='revpg_total_payable_amt']"));
+		String pay = totalPay.getText();
+		int totalVal = Integer.parseInt(pay.replaceAll("\\D", ""));
+		System.out.println("TOTAL PAYABLE VALUE IS:" +totalVal);
+		
 		//14) Close the browser 
+		driver.quit();
 
 	}
 
