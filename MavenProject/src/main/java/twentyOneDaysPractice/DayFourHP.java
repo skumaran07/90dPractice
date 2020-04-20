@@ -30,6 +30,8 @@ public class DayFourHP {
 		Thread.sleep(3000);
 		WebElement processor = driver.findElement(By.xpath("(//span[text()='Processor'])[2]"));
 		processor.click();
+		WebElement intCore7 = driver.findElement(By.xpath("(//input[@class='product-filter-checkbox'])[2]"));
+		intCore7.click();
 		//4) Hard Drive Capacity -->More than 1TB
 		//5) Select Sort By: Price: Low to High
 		//6) Print the First resulting Product Name and Price
