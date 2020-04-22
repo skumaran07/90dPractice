@@ -88,11 +88,35 @@ public class DayFourHP {
 		WebElement checkBtn = driver.findElement(By.xpath("//button[text()='check']"));
 		checkBtn.click();
 		Thread.sleep(5000);
+		WebElement estMsg = driver.findElement(By.xpath("//div[@class='delivery-days']"));
+		System.out.println("======================================================");
+		System.out.println(estMsg.getText());
+		System.out.println("======================================================");
 		
 		//10) Verify the order Total against the product price
+		WebElement subTot = driver.findElement(By.xpath("//span[@data-th='Subtotal']"));
+		String totStr = subTot.getText();
+		int subTotVal = Integer.parseInt(totStr.replaceAll("\\D", ""));
+		WebElement tol = driver.findElement(By.xpath("//td[@data-th='Order Total']//span[1]"));
+		String totAllStr = tol.getText();
+		int TotVal = Integer.parseInt(totAllStr.replaceAll("\\D", ""));
+		
 		//11) Proceed to Checkout if Order Total and Product Price matches
+		if(subTotVal == TotVal) {
+			WebElement checkOut = driver.findElement(By.id("sendIsCAC"));
+			checkOut.click();
+		}else {
+			System.out.println("Total values are not matched");
+			
+		}
 		//12) Click on Place Order
+		Thread.sleep(5000);
+		WebElement placeOrder = driver.findElement(By.xpath("//div[@class='place-order-primary']/button"));
+		placeOrder.click();
 		//13) Capture the Error message and Print
+		Thread.sleep(3000);
+		WebElement errMsg = driver.findElement(By.xpath("//div[@id='customer-email-error']"));
+		System.out.println(errMsg.getText());
 		//14) Close Browser
 		
 		System.out.println("EXECUTION DONE");
