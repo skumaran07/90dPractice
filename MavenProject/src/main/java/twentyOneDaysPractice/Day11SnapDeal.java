@@ -116,8 +116,9 @@ public class Day11SnapDeal {
 	//13) Capture the Price and Delivery Charge
 		Set<String> windSet = driver.getWindowHandles();
 		List<String> windList = new ArrayList<String>(windSet);
-		driver.switchTo().window(windList.get(0));
+		driver.switchTo().window(windList.get(1));
 		WebElement santPrice = driver.findElement(By.xpath("//span[@class='payBlkBig']"));
+		wait.until(ExpectedConditions.visibilityOf(santPrice));
 		String santPricStr = santPrice.getText();
 		int santPricVal = Integer.parseInt(santPricStr);
 		System.out.println("SANITIZER PRICE: " +santPricVal);
@@ -125,9 +126,28 @@ public class Day11SnapDeal {
 		System.out.println("TOTAL SANITIZER CHARGERS: " +totalSanProdVal);
 				
 	//14) Click on Add to Cart
+		WebElement addCartSanit = driver.findElement(By.xpath("//div[@id='add-cart-button-id']"));
+		wait.until(ExpectedConditions.elementToBeClickable(addCartSanit));
+		addCartSanit.click();
+		
 	//15) Click on Cart 
+		WebElement cartClk = driver.findElement(By.xpath("//i[@class='sd-icon sd-icon-cart-icon-white-2']"));
+		Thread.sleep(5000);
+		cartClk.click();
+		
 	//16) Validate the Proceed to Pay matches the total amount of both the products
+		WebElement proceedtoPayBtn = driver.findElement(By.xpath("//input[@class='btn btn-xl rippleWhite cart-button']"));
+		String btnText = proceedtoPayBtn.getAttribute("value");
+		int proceedPayVal = Integer.parseInt(btnText.replaceAll("[^0-9]", ""));
+		System.out.println("AMOUNT OF PROCEED TO PAY:  " +proceedPayVal);
+		int sumOfProd = youPayVal + totalSanProdVal;
+		if (proceedPayVal == sumOfProd) {
+			System.out.println("PROCEED TO PAY MATCH WITH PRODUCT TOTALS");
+		} else {
+			System.out.println("AMOUNT NOT MATCHED");
+		}
 	//17) Close all the windows
+		driver.quit();
 			
 
 	}
