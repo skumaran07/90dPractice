@@ -1,5 +1,11 @@
 package twentyOneDaysPractice;
 
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -9,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Day12CarWale {
@@ -77,7 +84,78 @@ public class Day12CarWale {
 		wait.until(ExpectedConditions.elementToBeClickable(creta));
 		//creta.click();
 		js.executeScript("arguments[0].click()", creta);
-
+		
+//7) Select Fuel Type as Petrol
+		WebElement fuelType = driver.findElement(By.xpath("//h3[contains(text(),'Fuel Type')]"));
+		js.executeScript("arguments[0].scrollIntoView();", fuelType);
+		wait.until(ExpectedConditions.elementToBeClickable(fuelType));
+		//fuelType.click();
+		js.executeScript("arguments[0].click()", fuelType);
+		WebElement petrol = driver.findElement(By.xpath("//span[text()='Petrol']"));
+		petrol.click();
+		
+//8) Select Best Match as "KM: Low to High"
+		WebElement sort = driver.findElement(By.xpath("//select[@id='sort']"));
+		wait.until(ExpectedConditions.elementToBeClickable(sort));
+		Select sl = new Select(sort);
+		sl.selectByValue("2");
+		
+//9) Validate the Cars are listed with KMs Low to High
+		Thread.sleep(3000);
+		List<WebElement> kmElem = driver.findElements(By.xpath("//table[@class='card-detail__vehicle-data']//td[1]//span"));
+		List<String> strAllKmsList = new ArrayList<String>();
+		List<Integer> intAllKmsList = new ArrayList<Integer>();
+		for(WebElement kms : kmElem) {
+			strAllKmsList.add(kms.getText());
+			intAllKmsList.add(Integer.parseInt(kms.getText().replaceAll("\\D", "")));
+		}
+		boolean sort1 = false; 
+		System.out.println(intAllKmsList);
+//validate kms sorted or not
+		for(int i=0; i<intAllKmsList.size()-1; i++) {
+			if(intAllKmsList.get(i) < intAllKmsList.get(i+1)) {
+				sort1 = true;
+			}else {
+				System.out.println("KMS Not Sorted");
+			}
+			
+			
+		}
+	
+//10) Add the least KM ran car to Wishlist
+		Collections.sort(intAllKmsList);
+		int minKM = intAllKmsList.get(0);
+		String format = NumberFormat.getInstance(Locale.US).format(intAllKmsList.get(0))+" km";
+		System.out.println(format);
+		WebElement wishList = driver.findElement(By.xpath("//span[text()='"+format+"']/ancestor::div[@class='card-detail-block']/preceding-sibling::div//span[contains(@class,'shortlist-icon')]"));
+		js.executeScript("arguments[0].click()", wishList);
+	
+//11) Go to Wishlist and Click on More Details
+		Thread.sleep(5000);
+		WebElement wishListwin = driver.findElement(By.xpath("//li[contains(text(),'Compare')]"));
+		wishListwin.click();
+		WebElement moreDetail = driver.findElement(By.xpath("//a[contains(text(),'More details')]"));
+		wait.until(ExpectedConditions.elementToBeClickable(moreDetail));
+		moreDetail.click();
+	
+//12) Print all the details under Overview in the Same way as displayed in application 
+		Set<String> winSet = driver.getWindowHandles();
+		List<String> winList = new ArrayList<String>(winSet);
+		driver.switchTo().window(winList.get(1));
+		//WebElement overView = driver.findElement(By.xpath("//div[@class='overview-list padding-bottom10']"));
+		//System.out.println(overView.getText());
+		//Set<WebElement> labelSet = (Set<WebElement>) 
+		List<WebElement> labels = driver.findElements(By.xpath("//div[@class='overview-list padding-bottom10']//li/div"));
+		//Set<WebElement> valuesSet = (Set<WebElement>) 
+		List<WebElement> values = driver.findElements(By.xpath("//div[@class='overview-list padding-bottom10']//li/div[2]"));
+		for(int j=0;j< values.size()-1; j++) {
+			//String labelText = labels.get(j).getText();
+			//String valueText = values.get(j).getText();
+			System.out.println(labels.get(j).getText().trim() +" = "+values.get(j).getText().trim());
+		}
+		
+//13) Close the browser.
+	
+	
 	}
-
 }
