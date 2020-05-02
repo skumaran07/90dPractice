@@ -10,6 +10,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,9 +21,12 @@ public class Day11SnapDeal {
 		// TODO Auto-generated method stub
 		System.setProperty("webdriver.chrome.driver", "./driver/chromedrivers.exe");
 		System.setProperty("webdriver.chrome.silentOutput", "false");
-		ChromeDriver driver = new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+		options.addArguments("--disable-notifications");
+		ChromeDriver driver = new ChromeDriver(options);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
+		@SuppressWarnings("deprecation")
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		
 	//1) Go to https://www.snapdeal.com/
