@@ -3,8 +3,10 @@ package twentyOneDaysPractice;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -145,13 +147,19 @@ public class Day12CarWale {
 		//WebElement overView = driver.findElement(By.xpath("//div[@class='overview-list padding-bottom10']"));
 		//System.out.println(overView.getText());
 		//Set<WebElement> labelSet = (Set<WebElement>) 
-		List<WebElement> labels = driver.findElements(By.xpath("//div[@class='overview-list padding-bottom10']//li/div"));
-		//Set<WebElement> valuesSet = (Set<WebElement>) 
-		List<WebElement> values = driver.findElements(By.xpath("//div[@class='overview-list padding-bottom10']//li/div[2]"));
-		for(int j=0;j< values.size()-1; j++) {
-			//String labelText = labels.get(j).getText();
-			//String valueText = values.get(j).getText();
-			System.out.println(labels.get(j).getText().trim() +" = "+values.get(j).getText().trim());
+		List<WebElement> featureElementList = driver.findElementsByXPath("//div[@id='overview']//li/div[@class='equal-width text-light-grey']");
+		List<WebElement> valueElemenetList = driver.findElementsByXPath("//div[@id='overview']//li/div[@class='equal-width dark-text']");
+		Map<String, String> features = new LinkedHashMap<String, String>();
+		for (int i = 1; i <= featureElementList.size(); i++) 
+		{
+			String feature = driver.findElementByXPath("//div[@id='overview']//li["+i+"]/div[@class='equal-width text-light-grey']").getText().trim();
+			String value = driver.findElementByXPath("//div[@id='overview']//li["+i+"]/div[@class='equal-width dark-text']").getText().trim();
+			features.put(feature, value);
+		}
+		System.out.println('\n'+"OverView of the selected Car"+'\n');
+		for (Map.Entry<String, String> eachEntry : features.entrySet()) 
+		{
+			System.out.println(eachEntry.getKey()+'\t'+'\t'+eachEntry.getValue());
 		}
 		
 //13) Close the browser.
