@@ -123,13 +123,38 @@ public class Day16ajio {
 		//10) Check the Order Total before apply coupon 
 		WebElement total = driver.findElement(By.xpath("//span[@class='price-value bold-font']"));
 		String TotalString = total.getText();
-		double ordetTotal = Double.parseDouble(TotalString);
+		String ss = TotalString.replaceAll("Rs.", "");
+		String sss = ss.replaceAll(",", "");
+		double ordetTotal = Double.parseDouble(sss);
 		System.out.println("TOTAL ORDER BEFORE COUPON " +ordetTotal);
 		
 		//11) Enter Coupon Code and Click Apply  
-		//12) Verify the Coupon Savings amount(round off if it in decimal) under Order Summary and the matches the amount calculated in Product details  
+		WebElement ApyCoupon = driver.findElement(By.id("couponCodeInput"));
+		//String cCode = code[2];
+		ApyCoupon.sendKeys("EPIC");
+		WebElement applyBtn = driver.findElement(By.xpath("//button[text()='Apply']"));
+		applyBtn.click();
+		Thread.sleep(5000);
+		
+		//12) Verify the Coupon Savings amount(round off if it in decimal) under Order Summary and the matches the amount calculated in Product details
+		WebElement aftOrderAmo = driver.findElement(By.xpath("//span[@class='price-value bold-font']"));
+		String aftTotalString = aftOrderAmo.getText();
+		String ss1 = aftTotalString.replaceAll("Rs.", "");
+		String sss1 = ss1.replaceAll(",", "");
+		double aftOrdetTotal = Double.parseDouble(sss1);
+		System.out.println("TOTAL ORDER AFTER COUPON " +Math.round(aftOrdetTotal));
+		
 		//13) Click on Delete and Delete the item from Bag  
+		WebElement deleteBtn = driver.findElement(By.xpath("//div[text()='Delete']"));
+		wait.until(ExpectedConditions.elementToBeClickable(deleteBtn));
+		deleteBtn.click();
+		WebElement deleteAll = driver.findElement(By.xpath("//div[text()='DELETE']"));
+		wait.until(ExpectedConditions.elementToBeClickable(deleteAll));
+		deleteAll.click();
+		
+		
 		//14) Close all the browsers
+		driver.quit();
 
 	}
 
