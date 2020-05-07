@@ -42,7 +42,8 @@ public class Day14zalando {
 		wait.until(ExpectedConditions.elementToBeClickable(clkWomenBtn));
 		clkWomenBtn.click();
 		Actions ac = new Actions(driver);
-		WebElement clothMenu = driver.findElement(By.xpath("//span[text()='Clothing']"));
+		WebElement clothMenu = driver.findElement(By.xpath("//span[@class='z-text z-navicat-header_categoryListLinkText z-text-cta z-text-black']"));
+		wait.until(ExpectedConditions.elementToBeClickable(clothMenu));
 		ac.moveToElement(clothMenu).build().perform();
 		WebElement coatMenu = driver.findElement(By.xpath("//span[text()='Coats']"));
 		coatMenu.click();
